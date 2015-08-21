@@ -1,7 +1,7 @@
 Package: com.aehmlo.redirector
 Name: Redirector
 Depends: mobilesubstrate, preferenceloader, ws.hbang.common
-Version: 0.0.2
+Version: 0.0.3
 Architecture: iphoneos-arm
 Description: Some redirect thingy.
 Maintainer: Aehmlo Lxaitn
