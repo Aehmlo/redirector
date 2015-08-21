@@ -1,6 +1,8 @@
 #import <SpringBoard/SBApplication.h>
 #import <SpringBoard/SBApplicationIcon.h>
 
+#import <Cephei/HBPreferences.h>
+
 @interface SBIconModel : NSObject
 
 - (SBApplicationIcon *)applicationIconForBundleIdentifier:(NSString *)bundleID;
@@ -15,11 +17,13 @@
 
 @end
 
+BOOL enabled;
+
 %hook SBIconController
 
 - (void)_launchIcon:(SBApplicationIcon *)_icon {
 
-	if([_icon.application.bundleIdentifier isEqualToString:@"com.apple.mobilecal"]) {
+	if(enabled && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.mobilecal"]) {
 
 		SBIconController *controller = [%c(SBIconController) sharedInstance];
 		SBIconModel *model = controller.model; // Better than weird casts.
@@ -31,3 +35,11 @@
 }
 
 %end
+
+%ctor {
+
+	HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.aehmlo.redirector"];
+
+	[preferences registerBool:&enabled default:YES forKey:@"Enabled"];
+
+}

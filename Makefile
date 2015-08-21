@@ -5,6 +5,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Redirector
 Redirector_FILES = Tweak.xm
+Redirector_LIBRARIES = cephei
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
