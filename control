@@ -1,6 +1,6 @@
 Package: com.aehmlo.redirector
 Name: Redirector
-Depends: mobilesubstrate
+Depends: mobilesubstrate, ws.hbang.common
 Version: 0.0.2
 Architecture: iphoneos-arm
 Description: Stock Calendar app => Fantastical.
