@@ -30,7 +30,7 @@ BOOL enabled, calendar, weather;
 		SBApplicationIcon *icon = [model applicationIconForBundleIdentifier:@"com.flexibits.fantastical2.iphone"];
 		%orig(icon ?: _icon);
 
-	} else if(enabled && weather && [_icon.appplication.bundleIdentifier isEqualToString:@"com.apple.weather"]) {
+	} else if(enabled && weather && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.weather"]) {
 
 		SBIconController *controller = [%c(SBIconController) sharedInstance];
 		SBApplicationIcon *icon = [controller.model applicationIconForBundleIdentifier:@"com.offcoast.weatherline"];
