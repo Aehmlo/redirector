@@ -3,7 +3,7 @@ Name: Redirector
 Depends: mobilesubstrate, preferenceloader, ws.hbang.common
 Version: 0.0.2
 Architecture: iphoneos-arm
-Description: Stock Calendar app => Fantastical.
+Description: Some redirect thingy.
 Maintainer: Aehmlo Lxaitn
 Author: Aehmlo Lxaitn
 Section: Tweaks
