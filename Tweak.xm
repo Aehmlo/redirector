@@ -17,13 +17,13 @@
 
 @end
 
-BOOL enabled;
+BOOL enabled, calendar;
 
 %hook SBIconController
 
 - (void)_launchIcon:(SBApplicationIcon *)_icon {
 
-	if(enabled && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.mobilecal"]) {
+	if(enabled && calendar && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.mobilecal"]) {
 
 		SBIconController *controller = [%c(SBIconController) sharedInstance];
 		SBIconModel *model = controller.model; // Better than weird casts.
@@ -41,5 +41,6 @@ BOOL enabled;
 	HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.aehmlo.redirector"];
 
 	[preferences registerBool:&enabled default:YES forKey:@"Enabled"];
+	[preferences registerBool:&calendar default:YES forKey:@"CalendarEnabled"];
 
 }
