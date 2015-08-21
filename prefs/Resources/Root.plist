@@ -52,6 +52,20 @@
 			<key>PostNotification</key>
 			<string>com.aehmlo.redirector/ReloadPrefs</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.aehmlo.redirector</string>
+			<key>key</key>
+			<string>WeatherEnabled</string>
+			<key>label</key>
+			<string>Weather</string>
+			<key>PostNotification</key>
+			<string>com.aehmlo.redirector/ReloadPrefs</string>
+		</dict>
 	</array>
 	<key>title</key>
 	<string>Redirector</string>

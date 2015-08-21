@@ -17,7 +17,7 @@
 
 @end
 
-BOOL enabled, calendar;
+BOOL enabled, calendar, weather;
 
 %hook SBIconController
 
@@ -28,6 +28,12 @@ BOOL enabled, calendar;
 		SBIconController *controller = [%c(SBIconController) sharedInstance];
 		SBIconModel *model = controller.model; // Better than weird casts.
 		SBApplicationIcon *icon = [model applicationIconForBundleIdentifier:@"com.flexibits.fantastical2.iphone"];
+		%orig(icon ?: _icon);
+
+	} else if(enabled && weather && [_icon.appplication.bundleIdentifier isEqualToString:@"com.apple.weather"]) {
+
+		SBIconController *controller = [%c(SBIconController) sharedInstance];
+		SBApplicationIcon *icon = [controller.model applicationIconForBundleIdentifier:@"com.offcoast.weatherline"];
 		%orig(icon ?: _icon);
 
 	} else %orig(_icon);
@@ -42,5 +48,6 @@ BOOL enabled, calendar;
 
 	[preferences registerBool:&enabled default:YES forKey:@"Enabled"];
 	[preferences registerBool:&calendar default:YES forKey:@"CalendarEnabled"];
+	[preferences registerBool:&weather default:YES forKey:@"WeatherEnabled"];
 
 }
