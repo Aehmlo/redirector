@@ -20,5 +20,7 @@
 	<string>1.0</string>
 	<key>NSPrincipalClass</key>
 	<string>RDORootListController</string>
+	<key>CFBundleName</key>
+	<string>Redirector</string>
 </dict>
 </plist>
