@@ -1,21 +1,9 @@
 #import <SpringBoard/SBApplication.h>
 #import <SpringBoard/SBApplicationIcon.h>
+#import <SpringBoard/SBIconController.h>
+#import <SpringBoard/SBIconModel.h>
 
 #import <Cephei/HBPreferences.h>
-
-@interface SBIconModel : NSObject
-
-- (SBApplicationIcon *)applicationIconForBundleIdentifier:(NSString *)bundleID;
-
-@end
-
-@interface SBIconController : NSObject
-
-+ (instancetype)sharedInstance;
-
-@property(nonatomic, retain) SBIconModel *model;
-
-@end
 
 BOOL enabled, calendar, weather;
 
