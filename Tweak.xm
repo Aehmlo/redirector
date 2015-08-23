@@ -6,8 +6,7 @@
 #import <Cephei/HBPreferences.h>
 
 BOOL enabled, calendar, weather;
-
-%group iOS5
+NSDictionary *redirects;
 
 %hook SBIconController
 
@@ -16,46 +15,40 @@ BOOL enabled, calendar, weather;
 
 - (void)_launchIcon:(SBApplicationIcon *)_icon {
 
-	if(enabled && weather && [_icon.application.displayIdentifier isEqualToString:@"com.apple.weather"]) {
+	if(enabled) {
 
-		SBIconController *controller = [%c(SBIconController) sharedInstance];
-		SBApplicationIcon *icon = [controller.model applicationIconForDisplayIdentifier:@"com.skymotion.skymotion"];
-		%orig(icon ?: _icon);
+		NSString *identifier;
+		
+		if([_icon.application respondsToSelector:@selector(displayIdentifier)]) {
+			identifier = _icon.application.displayIdentifier;
+		} else if([_icon.application respondsToSelector:@selector(bundleIdentifier)]) {
+			identifier = _icon.application.bundleIdentifier;
+		} else {
+			%orig(_icon);
+			return;
+		}
 
-	} else %orig(_icon);
+		if(redirects[identifier]) {
+
+			SBIconController *controller = [%c(SBIconController) sharedInstance];
+			SBIconModel *model = controller.model; // Better than weird casts.
+			SBApplicationIcon *icon;
+			if([model respondsToSelector:@selector(applicationIconForDisplayIdentifier:)]) {
+				icon = [model applicationIconForDisplayIdentifier:redirects[identifier]];
+			} else if([model respondsToSelector:@selector(applicationIconForBundleIdentifier:)]) {
+				icon = [model applicationIconForBundleIdentifier:redirects[identifier]];
+			}
+			%orig(icon ?: _icon);
+			return;
+		}
+
+	}
+
+	%orig(_icon);
 
 }
 
 #pragma clang diagnostic pop
-
-%end
-
-%end
-
-%group iOS8
-
-%hook SBIconController
-
-- (void)_launchIcon:(SBApplicationIcon *)_icon {
-
-	if(enabled && calendar && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.mobilecal"]) {
-
-		SBIconController *controller = [%c(SBIconController) sharedInstance];
-		SBIconModel *model = controller.model; // Better than weird casts.
-		SBApplicationIcon *icon = [model applicationIconForBundleIdentifier:@"com.flexibits.fantastical2.iphone"];
-		%orig(icon ?: _icon);
-
-	} else if(enabled && weather && [_icon.application.bundleIdentifier isEqualToString:@"com.apple.weather"]) {
-
-		SBIconController *controller = [%c(SBIconController) sharedInstance];
-		SBApplicationIcon *icon = [controller.model applicationIconForBundleIdentifier:@"com.offcoast.weatherline"];
-		%orig(icon ?: _icon);
-
-	} else %orig(_icon);
-
-}
-
-%end
 
 %end
 
@@ -69,12 +62,9 @@ BOOL enabled, calendar, weather;
 	[preferences registerBool:&calendar default:YES forKey:@"CalendarEnabled"];
 	[preferences registerBool:&weather default:YES forKey:@"WeatherEnabled"];
 
-	if([%c(SBiconModel) instancesRespondToSelector:@selector(applicationIconForBundleIdentifier:)]) {
-		HBLogDebug(@"Redirector: Loading iOS 8 version.");
-		%init(iOS8);
-	} else if([%c(SBIconModel) instancesRespondToSelector:@selector(applicationIconForDisplayIdentifier:)]) {
-		HBLogDebug(@"Redirector: Loading iOS 5/6/7 version.");
-		%init(iOS5);
-	}
+	[preferences registerObject:&redirects default:@{
+		@"com.apple.weather" : @"com.offcoast.weatherline",
+		@"com.apple.mobilecal" : @"com.flexibits.fantastical2.iphone"
+	} forKey:@"Redirects"];
 
 }
