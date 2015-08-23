@@ -5,7 +5,7 @@
 
 #import <Cephei/HBPreferences.h>
 
-BOOL enabled, calendar, weather;
+BOOL enabled;
 NSDictionary *redirects;
 
 %hook SBIconController
@@ -58,8 +58,6 @@ NSDictionary *redirects;
 	HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.aehmlo.redirector"];
 
 	[preferences registerBool:&enabled default:YES forKey:@"Enabled"];
-	[preferences registerBool:&calendar default:YES forKey:@"CalendarEnabled"];
-	[preferences registerBool:&weather default:YES forKey:@"WeatherEnabled"];
 
 	[preferences registerObject:&redirects default:@{
 		@"com.apple.weather" : @"com.offcoast.weatherline",
