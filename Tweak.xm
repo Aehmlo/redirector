@@ -7,7 +7,7 @@
 
 BOOL enabled, calendar, weather;
 
-%group iOS6
+%group iOS5
 
 %hook SBIconController
 
@@ -73,8 +73,8 @@ BOOL enabled, calendar, weather;
 		HBLogDebug(@"Redirector: Loading iOS 8 version.");
 		%init(iOS8);
 	} else if([%c(SBIconModel) instancesRespondToSelector:@selector(applicationIconForDisplayIdentifier:)]) {
-		HBLogDebug(@"Redirector: Loading iOS 6/7 version.");
-		%init(iOS6);
+		HBLogDebug(@"Redirector: Loading iOS 5/6/7 version.");
+		%init(iOS5);
 	}
 
 }
