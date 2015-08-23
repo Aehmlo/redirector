@@ -18,12 +18,13 @@ NSDictionary *redirects;
 	if(enabled) {
 
 		NSString *identifier;
-		
+
 		if([_icon.application respondsToSelector:@selector(displayIdentifier)]) {
 			identifier = _icon.application.displayIdentifier;
 		} else if([_icon.application respondsToSelector:@selector(bundleIdentifier)]) {
 			identifier = _icon.application.bundleIdentifier;
 		} else {
+			HBLogError(@"Redirector: icon's parent application object does not understand displayIdentifier or bundleIdentifier. Aborting. Please consider sending an email from Cydia for help.");
 			%orig(_icon);
 			return;
 		}
@@ -53,8 +54,6 @@ NSDictionary *redirects;
 %end
 
 %ctor {
-
-	HBLogDebug(@"Redirector: injecting!");
 
 	HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.aehmlo.redirector"];
 
