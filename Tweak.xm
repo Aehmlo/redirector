@@ -30,12 +30,18 @@ NSDictionary *redirects;
 
 			SBIconController *controller = [%c(SBIconController) sharedInstance];
 			SBIconModel *model = controller.model; // Better than weird casts.
-			SBApplicationIcon *icon;
+
+			SBApplicationIcon *icon = nil;
 			if([model respondsToSelector:@selector(applicationIconForDisplayIdentifier:)]) {
 				icon = [model applicationIconForDisplayIdentifier:redirects[identifier]];
 			} else if([model respondsToSelector:@selector(applicationIconForBundleIdentifier:)]) {
 				icon = [model applicationIconForBundleIdentifier:redirects[identifier]];
 			}
+
+			if(!icon) {
+				HBLogWarn(@"Redirector: No target icon found for redirect %@ => %@; using tapped icon instead.", identifier, redirects[identifier]);
+			}
+
 			%orig(icon ?: _icon);
 			return;
 		}
