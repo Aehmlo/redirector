@@ -10,9 +10,6 @@ NSDictionary *redirects;
 
 %hook SBIconController
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
 - (void)_launchIcon:(SBApplicationIcon *)_icon {
 
 	if(enabled) {
@@ -48,8 +45,6 @@ NSDictionary *redirects;
 	%orig(_icon);
 
 }
-
-#pragma clang diagnostic pop
 
 %end
 
