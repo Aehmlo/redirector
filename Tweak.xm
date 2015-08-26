@@ -58,7 +58,7 @@ static void doTheThing(id self, SEL _cmd, SBApplicationIcon *_icon, void orig(SB
 
 }
 
-- (void)launchIcon:(SBApplicationIcon *)icon {
+- (void)launchIcon:(SBApplicationIcon *)icon { // iOS 3
 
 	doTheThing(self, _cmd, icon, &%orig);
 
