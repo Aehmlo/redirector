@@ -8,9 +8,7 @@
 BOOL enabled;
 NSDictionary *redirects;
 
-%hook SBIconController
-
-- (void)_launchIcon:(SBApplicationIcon *)_icon {
+static void doTheThing(id self, SEL _cmd, SBApplicationIcon *_icon, void orig(SBIconController *, SEL, SBApplicationIcon *)) {	
 
 	if(enabled) {
 
@@ -22,7 +20,7 @@ NSDictionary *redirects;
 			identifier = _icon.application.bundleIdentifier;
 		} else {
 			HBLogError(@"Redirector: icon's parent application object does not understand displayIdentifier or bundleIdentifier. Aborting. Please consider sending an email from Cydia for help.");
-			%orig(_icon);
+			orig(self, _cmd, _icon);
 			return;
 		}
 
@@ -42,13 +40,27 @@ NSDictionary *redirects;
 				HBLogWarn(@"Redirector: No target icon found for redirect %@ => %@; using tapped icon instead.", identifier, redirects[identifier]);
 			}
 
-			%orig(icon ?: _icon);
+			orig(self, _cmd, icon ?: _icon);
 			return;
 		}
 
 	}
 
-	%orig(_icon);
+	orig(self, _cmd, _icon);
+
+}
+
+%hook SBIconController
+
+- (void)_launchIcon:(SBApplicationIcon *)icon { // iOS 4–8
+
+	doTheThing(self, _cmd, icon, &%orig);
+
+}
+
+- (void)launchIcon:(SBApplicationIcon *)icon {
+
+	doTheThing(self, _cmd, icon, &%orig);
 
 }
 
