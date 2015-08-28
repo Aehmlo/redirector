@@ -8,7 +8,7 @@
 BOOL enabled;
 NSDictionary *redirects;
 
-static void doTheThing(id self, SEL _cmd, SBApplicationIcon *_icon, void orig(SBIconController *, SEL, SBApplicationIcon *)) {	
+static void doTheThing(id self, SEL _cmd, void orig(SBIconController *, SEL, SBApplicationIcon *), SBApplicationIcon *_icon) {	
 
 	if(enabled) {
 
@@ -54,13 +54,13 @@ static void doTheThing(id self, SEL _cmd, SBApplicationIcon *_icon, void orig(SB
 
 - (void)_launchIcon:(SBApplicationIcon *)icon { // iOS 4–8
 
-	doTheThing(self, _cmd, icon, &%orig);
+	doTheThing(self, _cmd, &%orig, icon);
 
 }
 
 - (void)launchIcon:(SBApplicationIcon *)icon { // iOS 3
 
-	doTheThing(self, _cmd, icon, &%orig);
+	doTheThing(self, _cmd, &%orig, icon);
 
 }
 
